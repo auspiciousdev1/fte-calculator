@@ -135,9 +135,10 @@
   <div class="calculator">
     <h2>FTE Impact Calculator</h2>
 
+    <input type="number" id="monthlyWorkingHours" placeholder="Enter total monthly working hours (e.g. 133)" />
+
     <input type="number" id="manualHours" placeholder="Enter hours per month" />
 
-    <!-- Custom styled checkbox -->
     <label class="checkbox-container">
       <input type="checkbox" id="isPeakHour" />
       <span class="checkmark"></span>
@@ -153,15 +154,21 @@
   <script>
     function calculateFTE() {
       const manualHours = parseFloat(document.getElementById("manualHours").value);
+      const monthlyWorkingHours = parseFloat(document.getElementById("monthlyWorkingHours").value);
       const isPeakHour = document.getElementById("isPeakHour").checked;
-      const yearlyWorkingHours = 1596;
 
       if (isNaN(manualHours) || manualHours < 0) {
-        document.getElementById("result").innerText = "🚫 Please enter a valid number!";
+        document.getElementById("result").innerText = "🚫 Please enter a valid monthly manual hours!";
         return;
       }
 
-      // Peak hour multiplier logic
+      if (isNaN(monthlyWorkingHours) || monthlyWorkingHours <= 0) {
+        document.getElementById("result").innerText = "🚫 Please enter a valid monthly working hours!";
+        return;
+      }
+
+      const yearlyWorkingHours = monthlyWorkingHours * 12;
+
       const peakMultiplier = isPeakHour ? 1.5 : 1.0;
       const adjustedHours = manualHours * peakMultiplier;
 
